@@ -1,8 +1,5 @@
 #!/usr/bin/python
 
-from functools import partialmethod
-
-
 class node():
     def __init__(self):
         self.next       = None
@@ -45,12 +42,3 @@ class double_linked_list():
                 threads:int = 1, 
                 processes:int = 1):
         self.base.forward(func, parameter, restrict, threads, processes)
-
-class burger(node):
-    def __init__(self):
-        super().__init__()
-    def func(self,param):
-        print(param)
-
-joe = double_linked_list([burger(),burger()])
-joe.forward(burger.func, "cheese")
