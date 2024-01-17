@@ -31,8 +31,13 @@ class double_linked_list():
         self.length += 1
         if (self.base) == None:
             self.base = node
-            self.top = node
-        self.top.next = node
+        elif (self.base == self.top):
+            self.base.next = node
+            node.previous = self.base
+        else: 
+            self.top.next = node
+            node.previous = self.top
+
         self.top = node
 
     def forward(self, 
