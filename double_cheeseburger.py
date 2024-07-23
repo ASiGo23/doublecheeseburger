@@ -12,9 +12,8 @@ class node():
                 func, 
                 parameter:str,
                 restrict:type = None):
-        func(getattr(self, parameter))
-        if self.next != None:
-            self.next.forward(func, parameter, restrict)
+        value = func(self, parameter)
+        return(self.next, value)
 class double_linked_list():
     def __init__(self, list:list = []):
         self.length = 0
@@ -38,13 +37,18 @@ class double_linked_list():
             self.top = node
     def forward(self, 
                 func, 
-                parameter):
-        self.base.forward(func, parameter)
+                parameter:str):
+        return_values = []
+        next, value = self.base.forward(func, parameter)
+        return_values.append(value)
+        while next != None: 
+            next, value = next.forward(func,parameter)
+            return_values.append(value)
+        return return_values
 
     def str(self):
-        self.forward(print,"info")
+        return self.forward(getattr,"info")
 
-if __name__ == "double_cheeseburger":
+if __name__ == "__main__":
     new = double_linked_list([1,2,3,4])
-    print("printing")
-    new.str()
+    print(new.str())
