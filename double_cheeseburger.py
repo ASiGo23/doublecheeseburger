@@ -46,9 +46,9 @@ class double_linked_list():
             return_values.append(value)
         return return_values
 
-    def str(self):
+    def list(self):
         return self.forward(getattr,"info")
 
 if __name__ == "__main__":
     new = double_linked_list([1,2,3,4])
-    print(new.str())
+    print(new.list())
