@@ -10,7 +10,7 @@ class node():
     
     def forward(self, 
                 func, 
-                parameter:str,
+                parameter,
                 restrict = None):
         value = func(self, parameter)
         if restrict == None:
@@ -18,7 +18,7 @@ class node():
         else:
             return(self.type_next, value)
 class double_linked_list():
-    def __init__(self, list:list = []):
+    def __init__(self, iterable):
         self.length = 0
         self.base = None
         self.top = None
@@ -26,7 +26,7 @@ class double_linked_list():
         self.type_base = {}
         self.type_top = {}
 
-        for layer in list:
+        for layer in iterable:
             self.append(node(layer))
     
     def append(self, node:node):
@@ -55,22 +55,31 @@ class double_linked_list():
             self.type_top.update({type(node.info).__name__: node})
     def forward(self, 
                 func, 
-                parameter:str,
+                parameter,
                 restriction = None):
         return_values = []
         if restriction == None:
             next, value = self.base.forward(func, parameter,restriction)
         else: 
             next, value = self.type_base[restriction.__name__].forward(func, parameter,restriction)
-        return_values.append(value)
+        yield value
         while next != None: 
             next, value = next.forward(func,parameter,restriction)
-            return_values.append(value)
-        return return_values
+            yield value
 
-    def list(self, restriction = None):
-        return self.forward(getattr,"info",restriction)
+    def list(self):
+        values = []
+        for node in self:
+            values.append(node)
+        return values
+
+    def __iter__(self, restriction = None):
+        return self.forward(getattr, "info", restriction)
+
+    def __getitem__(self,index): 
+        return double_linked_list(self.__iter__(index))
 
 if __name__ == "__main__":
     new = double_linked_list([1,"a",2,"b",3,"c",4,"d"])
-    print(new.list(str))
+    new.append(node("a"))
+    print(new[int].list())
