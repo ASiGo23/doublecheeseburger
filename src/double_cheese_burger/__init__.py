@@ -1,1 +1,1 @@
-import double_cheese_burger
+from double_cheese_burger.main import *

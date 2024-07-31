@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from functools import singledispatchmethod
+
 class node():
     def __init__(self, info):
         self.info = info
@@ -18,7 +20,7 @@ class node():
         else:
             return(self.type_next, value)
 class double_linked_list():
-    def __init__(self, iterable):
+    def __init__(self, iterable = None):
         self.length = 0
         self.base = None
         self.top = None
@@ -26,10 +28,17 @@ class double_linked_list():
         self.type_base = {}
         self.type_top = {}
 
+        if iterable == None:
+            return
         for layer in iterable:
             self.append(node(layer))
     
-    def append(self, node:node):
+    @singledispatchmethod
+    def append(self, info):
+        self.node_append(node(info))
+
+    @append.register 
+    def node_append(self, node:node):
         self.length += 1
         if (self.base) == None:
             self.base = node
@@ -53,6 +62,7 @@ class double_linked_list():
             self.type_top[type(node.info).__name__].type_next = node
             node.type_previous = self.type_top[type(node.info).__name__]
             self.type_top.update({type(node.info).__name__: node})
+    
     def forward(self, 
                 func, 
                 parameter,
@@ -81,5 +91,5 @@ class double_linked_list():
 
 if __name__ == "__main__":
     new = double_linked_list([1,"a",2,"b",3,"c",4,"d"])
-    new.append(node("a"))
+    new.append('a')
     print(new[int].list())
